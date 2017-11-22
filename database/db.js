@@ -22,18 +22,18 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-const Users = sequelize.define('userito', {
+const Users = sequelize.define('users_jt_mix', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    username: Sequelize.STRING,
+    username: {type: Sequelize.STRING, unique: true},
     password: Sequelize.STRING,
-    email: Sequelize.STRING
+    email: {type: Sequelize.STRING, unique: true}
   }
   , {
-    timestamps: false
+    timestamps: true
   });
 
 
@@ -41,7 +41,6 @@ Users.sync();
 
 
 const save = (username, password, email) => {
-  Users.create({ username, password, email })
   return Users.create({ username, password, email });
 };
 

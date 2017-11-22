@@ -121,7 +121,7 @@ app.post('/login', (req, resp) => {
         resp.writeHead(201, {'Content-Type': 'text/plain'});
         resp.end('Not Found');
       }
-      
+
       else {
         console.log("redirecting to home");
         resp.redirect('/');
@@ -140,7 +140,16 @@ app.post('/signup', (req, resp) => {
       resp.end('User Created');
     })
     .catch(err => {
-      throw new Error(err)
+      err.errors.forEach(error => {
+        console.log(`${error.type} on ${error.path}`);
+        if (error.path === 'username') {
+          console.log('This user already exists');
+        } else if (error.path === 'email') {
+          console.log('This email is already in use');
+        }
+      })
+      resp.end('Something already exists');
+      // throw new Error(err)
     });
   console.log(req.body);
 })
